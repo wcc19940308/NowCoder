@@ -2,7 +2,7 @@ package NowCoder.class01;
 
 import java.util.Arrays;
 
-// 每次从后往前审插，逐个查看是否需要交换
+// 每次从后往前审查，逐个查看是否需要交换
 // 与数据规模的格式有关，如果是有序数组，则第二个for循环是不用执行的，O（N）；如果逆序，第二个for循环需要全部执行，O（N^2）
 public class InsertionSort {
     public static void insertionSort(int[] arr) {
