@@ -11,9 +11,10 @@ import java.util.Arrays;
  *
  */
 public class DutchFlag {
+    // 左闭右闭
     public static int[] partition(int[] arr, int lo, int hi, int num) {
         int less = lo - 1; // 小于区域
-        int more = hi; // 大于区域
+        int more = hi + 1; // 大于区域
         int cur = lo;
         while (cur < more) {
             if (arr[cur] < num) {
@@ -24,7 +25,7 @@ public class DutchFlag {
                 cur++;
             }
         }
-        return new int[]{less + 1, more};
+        return new int[]{less + 1, more - 1};
     }
 
     public static void swap(int[] arr, int m, int n) {
