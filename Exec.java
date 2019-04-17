@@ -1,6 +1,7 @@
 package NowCoder;
 
 import java.util.Arrays;
+import java.util.HashMap;
 
 public class Exec {
     public static void printMatrixZigZag(int[][] matrix) {
