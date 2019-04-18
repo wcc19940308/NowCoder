@@ -3,12 +3,10 @@ package NowCoder.class02;
 import java.util.Arrays;
 
 /**
- *
  * 荷兰国旗问题：给定一个数num，将数组中划分成3部分，小于num的部分，等于num的部分，大于num的部分
  * less,cur,more 3个下标，遍历数组，如果值小于num，则和less+1互换，如果等于num，继续下一个，如果大于num，则和more-1互换
  * 相当于不断扩大小于和大于的区域，中间的部分就是等于的区域部分
  * 当cur == more的时候，停止
- *
  */
 public class DutchFlag {
     // 左闭右闭
