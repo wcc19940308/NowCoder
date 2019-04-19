@@ -1,46 +1,62 @@
 package NowCoder;
 
-import java.util.Arrays;
-import java.util.HashMap;
+import java.util.Stack;
 
 public class Exec {
-    public static void printMatrixZigZag(int[][] matrix) {
-        int tR = 0;
-        int tC = 0;
-        int dR = 0;
-        int dC = 0;
-        int endR = matrix.length - 1;
-        int endC = matrix[0].length - 1;
-        boolean fromUp = false;
-        // 因为A点是先往右走，到头了再往下走，而这里的判断条件是A已经到了最后一行，那么代表
-        // A已经全部走完了
-        while (tR != endR + 1) {
-            printLevel(matrix, tR, tC, dR, dC, fromUp);
-            tR = tC == endC ? tR + 1 : tR;
-            tC = tC == endC ? tC : tC + 1;
-            dC = dR == endR ? dC + 1 : dC;
-            dR = dR == endR ? dR : dR + 1;
-            fromUp = !fromUp;
-        }
-        System.out.println();
-    }
+    public static class Pair {
+        public int val;
+        public int times;
 
-    public static void printLevel(int[][] m, int tR, int tC, int dR, int dC,
-                                  boolean f) {
-        if (f) {
-            while (tR != dR + 1) {
-                System.out.print(m[tR++][tC--] + " ");
-            }
-        } else {
-            while (dR != tR - 1) {
-                System.out.print(m[dR--][dC++] + " ");
-            }
+        public Pair(int val) {
+            this.val = val;
+            times = 1;
         }
     }
 
-    public static void main(String[] args) {
-        int[][] matrix = { { 1, 2, 3, 4 }, { 5, 6, 7, 8 }, { 9, 10, 11, 12 } };
-        printMatrixZigZag(matrix);
+    public int communication(int[] arr) {
+        int n = arr.length;
+        int maxIndex = 0;
+        Stack<Pair> stack = new Stack<>();
+        int res = 0;
+        for (int i = 1; i < n; i++) {
+            maxIndex = arr[i] > arr[maxIndex] ? i : maxIndex;
+        }
+        int nextIndex = getNextIndex(n, maxIndex);
+        stack.push(new Pair(arr[maxIndex]));
+        while (nextIndex != maxIndex) {
+            int value = arr[nextIndex];
+            while (!stack.isEmpty() && stack.peek().val < value) {
+                int times = stack.pop().times;
+                res += getInternalSum(times) + times * 2;
+            }
+            if (!stack.isEmpty() && stack.peek().val == value) {
+                stack.peek().times++;
+            } else {
+                stack.push(new Pair(value));
+            }
+            nextIndex = getNextIndex(n, nextIndex);
+        }
 
+        while (!stack.isEmpty()) {
+            int times = stack.pop().times;
+            res += getInternalSum(times);
+            if (!stack.isEmpty()) {
+                res += times;
+                if (stack.size() > 1) {
+                    res += times;
+                } else {
+                    res += stack.peek().times == 1 ? 0 : times;
+                }
+            }
+        }
+        return res;
+    }
+
+    public int getNextIndex(int len, int curIndex) {
+        return curIndex < (len - 1) ? curIndex + 1 : 0;
+    }
+
+    public int getInternalSum(int n) {
+        return n == 1 ? 0 : n * (n - 1) / 2;
     }
 }
