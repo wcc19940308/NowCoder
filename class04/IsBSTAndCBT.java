@@ -5,13 +5,11 @@ import java.util.Queue;
 import java.util.Stack;
 
 /**
- *
  * 判断是否为二叉搜索树和完全二叉树
  * 二叉搜索树：中序遍历升序(递归、非递归、Morris遍历)
  * 完全二叉树：层次遍历
  * 1.如果X有右节点没有左节点，false
  * 2.如果X有左没右，或者X左右都没有，那么X右边的必须都是叶节点，可以通过一个bool变量来开启此阶段，即如果bool为true，那么后面的节点都应该是叶节点
- *
  */
 public class IsBSTAndCBT {
     public static class TreeNode {

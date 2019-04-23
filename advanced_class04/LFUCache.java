@@ -74,15 +74,18 @@ public class LFUCache {
         FreqNode freqnode = freqMap.get(keynode.freq);
         keynode.freq += 1;
         FreqNode nextFreqNode = freqnode.next;
+        // 没有下一个频率的节点，那么就新建
         if (nextFreqNode == null) {
+            // 这里同理已经把newFreNode的pre赋值了
             nextFreqNode = new FreqNode(keynode.freq, freqnode, null);
             freqnode.next = nextFreqNode;
             freqMap.put(keynode.freq, nextFreqNode);
         }
+        // 如果有下一个频率的节点，但是相差大于1。那么在中间插入
         if (nextFreqNode != null && nextFreqNode.freq > keynode.freq) {
             nextFreqNode = insertFreqNodePlus1(keynode.freq, freqnode);
         }
-        // 如果下一个freqNode不为空，且下一个freqNode的频率就是+1后的频率
+        // 将key从原来的FreqNode的set中移动到下一个FreqNode中的set
         unlinkKey(keynode, freqnode);
         linkKey(keynode, nextFreqNode);
     }
@@ -91,26 +94,31 @@ public class LFUCache {
     public void removeKeyNode(FreqNode fnode) {
         // head中最上面的那个节点
         KeyNode knode = fnode.set.iterator().next();
+        // 将knode从map和对应的freqNode的set中移除
         unlinkKey(knode, freqMap.get(knode.freq));
         keyMap.remove(knode.key);
     }
     // Inserts a new KeyNode<key, value> with freq 1. - yes
     public void insertKeyNode(int key, int val) {
+        // 创建新节点，分别在2个map中加入,并且重置head
         KeyNode keynode = new KeyNode(key, val);
         keyMap.put(key, keynode);
         if (!freqMap.containsKey(1)) {
             FreqNode freqnode = new FreqNode(1, null, head);
-            freqnode.next = head;
+            //freqnode.next = head;
             if (head != null)   head.prev = freqnode;
             head = freqnode;
             freqMap.put(1, freqnode);
         }
+        // 在freqMap的set中加入
         linkKey(keynode, freqMap.get(1));
     }
     // insert a new freqnode with new freq after given "freqnode" - yes
     public FreqNode insertFreqNodePlus1(int freq, FreqNode freqnode) {
+        // 这里的构造函数已经把newFreqNode的pre和next进行了引用赋值
         FreqNode newfnode = new FreqNode(freq, freqnode, freqnode.next);
         freqMap.put(freq, newfnode);
+        // 所以这里只需要再连接2个引用即可
         if (freqnode.next != null)  freqnode.next.prev = newfnode;
         freqnode.next = newfnode;
         return newfnode;

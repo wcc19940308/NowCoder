@@ -1,6 +1,7 @@
 package NowCoder;
 
 import java.util.Stack;
+import java.util.concurrent.ConcurrentSkipListSet;
 
 public class Exec {
     public static class Pair {
@@ -58,5 +59,10 @@ public class Exec {
 
     public int getInternalSum(int n) {
         return n == 1 ? 0 : n * (n - 1) / 2;
+    }
+
+    public static void main(String[] args) {
+        ConcurrentSkipListSet skipListSet = new ConcurrentSkipListSet();
+
     }
 }
