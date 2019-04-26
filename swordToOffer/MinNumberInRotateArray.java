@@ -31,7 +31,7 @@ public class MinNumberInRotateArray {
             return 0;
         }
         int left = 0, right = array.length - 1;
-        while (left < right) {
+        while (left <= right) {
             // 已经排好序的情况
             if (array[left] < array[right]) {
                 return array[left];
